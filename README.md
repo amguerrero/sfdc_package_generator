@@ -1,1 +1,1 @@
-"# Salesforce.com package.xml generator" 
+# Salesforce.com package.xml generator 
