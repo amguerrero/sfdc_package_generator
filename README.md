@@ -22,3 +22,36 @@ groovy GeneratePackage.groovy delta/src delta/src/package.xml
 ```
 
 This will generate the package.xml file in delta/src/ and now we just need to deploy it, maybe with ant.
+
+## Configuration
+The *Salesforce.com package.xml generator* uses a configuration file (conf/config.json by default) to determine what sub-directories to add to the package.xml file if they are present in the source directory, and how the types are added to the package.xml (by adding an asterisk or by adding all the files in the sub-directory as members), like this:
+
+This piece of configuration will create a CustomApplication type, with an asterisk as the only member:
+```
+	"applications" : {
+		"xmlTag" : "CustomApplication",
+		"acceptsAsterisk" : true
+	}
+```
+
+On the other hand, this piece of configuration will create a CustomObject type with as many members as *.objects exist in the objects/ directory (it uses the filename without the extension):
+```
+	"objects" : {
+		"xmlTag" : "CustomObject",
+		"acceptsAsterisk" : false,
+		"extension" : ".object"
+	}
+```
+
+In the case the items are organised in folders, like it is the case of Dashboards, this configuration adds the folder to the member.
+
+There is a third option of configuration, and it is useful for the Documents:
+```
+	"documents" : {
+		"xmlTag" : "Document",
+		"acceptsAsterisk" : false,
+		"excludeExtension" : "-meta.xml"
+	}
+```
+
+This option adds all the files under document/ directory which don't finish in -meta.xml, including the folders where they're organised.
